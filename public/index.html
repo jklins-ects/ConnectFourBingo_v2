@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Connect Four Bingo</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/styles.css" />
+    </head>
+    <body>
+        <div class="page-shell">
+            <header class="hero">
+                <div>
+                    <h1>Connect Four Bingo</h1>
+                </div>
+                <button id="formToggle" class="ghost-button" type="button" aria-expanded="true">
+                    Hide setup panel
+                </button>
+            </header>
+
+            <main class="layout">
+                <section class="board-panel">
+                    <div class="board-header">
+                        <div></div>
+                        <div class="board-actions">
+                            <button id="showAnswers" class="secondary-button hidden" type="button">View answers</button>
+                        </div>
+                    </div>
+
+                    <div id="BingoBoard" aria-label="Connect Four Bingo board">
+                        <div class="boardrow">
+                            <div id="cell0" class="cell col1 downRight"></div>
+                            <div id="cell1" class="cell col2"></div>
+                            <div id="cell2" class="cell col3"></div>
+                            <div id="cell3" class="cell col4 upRight"></div>
+                        </div>
+                        <div class="boardrow">
+                            <div id="cell4" class="cell col1"></div>
+                            <div id="cell5" class="cell col2 downRight"></div>
+                            <div id="cell6" class="cell col3 upRight"></div>
+                            <div id="cell7" class="cell col4"></div>
+                        </div>
+                        <div class="boardrow">
+                            <div id="cell8" class="cell col1"></div>
+                            <div id="cell9" class="cell col2 upRight"></div>
+                            <div id="cell10" class="cell col3 downRight"></div>
+                            <div id="cell11" class="cell col4"></div>
+                        </div>
+                        <div class="boardrow">
+                            <div id="cell12" class="cell col1 upRight"></div>
+                            <div id="cell13" class="cell col2"></div>
+                            <div id="cell14" class="cell col3"></div>
+                            <div id="cell15" class="cell col4 downRight"></div>
+                        </div>
+                    </div>
+
+                    <section id="termsNotUsed" class="unused-panel">
+                        <div class="section-heading">
+                            <h3>More terms in this set</h3>
+                            <p>These terms were available in the source, but not selected for this board.</p>
+                        </div>
+                        <div id="termsNotUsedList" class="unused-list"></div>
+                    </section>
+                </section>
+
+                <aside id="setupPanel" class="setup-panel">
+                    <div class="setup-card">
+                        <div class="section-heading">
+                            <h2>Create a board</h2>
+                            <p>Choose one input method, load your terms, and then share the generated link with students or others.</p>
+                        </div>
+
+                        <div class="samples">
+                            <a href="https://docs.google.com/spreadsheets/d/1aIPptNOpldYZVHXNp19WS5daip-CJCEvcAAuEv-xQw8/edit?usp=sharing" target="_blank">Open the sample Google Sheet</a>
+                        </div>
+
+                        <div class="tabs" role="tablist" aria-label="Board input methods">
+                            <button class="tab active" type="button" data-tab="google" role="tab">Load Google Sheet</button>
+                            <button class="tab" type="button" data-tab="csv" role="tab">Load CSV</button>
+                            <button class="tab" type="button" data-tab="direct" role="tab">Direct Input</button>
+                        </div>
+
+                        <div class="tab-panels">
+                            <section class="tab-panel active" data-panel="google">
+                                <label class="input-label" for="inputSheetURL">Google Sheets share link</label>
+                                <input type="url" id="inputSheetURL" placeholder="https://docs.google.com/spreadsheets/d/..." />
+                                <div class="field-grid">
+                                    <div>
+                                        <label class="input-label" for="inputSheetName">Sheet tab name</label>
+                                        <input type="text" id="inputSheetName" value="Sheet1" placeholder="Sheet1" />
+                                    </div>
+                                    <div>
+                                        <label class="input-label" for="inputSheetRange">Cell range</label>
+                                        <input type="text" id="inputSheetRange" value="A1:B25" placeholder="A1:B25" />
+                                    </div>
+                                </div>
+                                <p class="hint">Make the sheet viewable to anyone with the link. Include the header row in the range. The first column should be the term. The second column can be a definition, but it is optional.</p>
+                                <p id="googleConfigHint" class="hint"></p>
+                                <button id="loadGoogleSheet" class="primary-button" type="button">Load Google Sheet</button>
+                            </section>
+
+                            <section class="tab-panel" data-panel="csv">
+                                <label class="input-label" for="csvFile">CSV file</label>
+                                <input id="csvFile" type="file" accept=".csv,text/csv" />
+                                <p class="hint">Choose a CSV file with a header row. The first column should be the term. The second column can be a definition, but it is optional.</p>
+                                <button id="loadCsv" class="primary-button" type="button">Load CSV file</button>
+                            </section>
+
+                            <section class="tab-panel" data-panel="direct">
+                                <label class="input-label" for="directInput">Enter one term per line, with an optional definition</label>
+                                <textarea id="directInput" rows="10" placeholder="Term one | Definition one&#10;Term two"></textarea>
+                                <p class="hint">Use one line per term. Add a definition after a vertical bar if you want one: <code>|</code></p>
+                                <button id="loadDirectInput" class="primary-button" type="button">Load direct input</button>
+                            </section>
+                        </div>
+
+                        <section id="shareSection" class="share-section hidden">
+                            <div class="section-heading">
+                                <h3>Share this board</h3>
+                                <p>Use this link to reopen this game setup with the options you choose below.</p>
+                            </div>
+                            <label class="checkbox-row" for="showAnswersInShare">
+                                <input id="showAnswersInShare" type="checkbox" />
+                                <span>Include the answers button in shared links</span>
+                            </label>
+                            <label class="checkbox-row" for="includePanelInShare">
+                                <input id="includePanelInShare" type="checkbox" />
+                                <span>Include game creation panel</span>
+                            </label>
+                            <div class="share-links">
+                                <label class="input-label" for="shareLink">Share link</label>
+                                <div class="copy-row">
+                                    <input id="shareLink" type="text" readonly />
+                                    <button id="copyShareLink" class="ghost-button icon-button" type="button" aria-label="Copy share link" title="Copy share link">
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="printSection" class="share-section hidden">
+                            <div class="section-heading">
+                                <h3>Print options</h3>
+                            </div>
+                            <div class="section-heading">
+                                <h4>Print Terms/Definitions</h4>
+                                <p>Open a print-friendly tab with the full term and definition list.</p>
+                            </div>
+                            <button id="openPrintDefinitions" class="primary-button" type="button">Open terms/definitions</button>
+                            <div class="section-heading">
+                                <h4>Print Playable Boards</h4>
+                                <p>Open a print-friendly tab with multiple randomized boards, one board per page.</p>
+                            </div>
+                            <div class="print-controls">
+                                <div>
+                                    <label class="input-label" for="printBoardCount">Number of boards</label>
+                                    <input id="printBoardCount" type="number" min="1" max="100" value="10" />
+                                </div>
+                                <button id="openPrintBoards" class="primary-button" type="button">Open printable boards</button>
+                            </div>
+                        </section>
+
+                        <p id="feedbackMessage" class="feedback" aria-live="polite"></p>
+                    </div>
+                </aside>
+            </main>
+        </div>
+
+        <dialog id="definitionsModal" class="answers-dialog">
+            <div class="dialog-header">
+                <h2>Answer Key</h2>
+                <button id="closeAnswers" class="ghost-button" type="button">Close</button>
+            </div>
+            <div class="dialog-content">
+                <table id="definitionsTable"></table>
+            </div>
+        </dialog>
+
+        <script src="/app.js"></script>
+    </body>
+</html>

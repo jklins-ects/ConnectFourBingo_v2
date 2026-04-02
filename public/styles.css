@@ -1,0 +1,474 @@
+:root {
+    --bg: #f3efe7;
+    --surface: rgba(255, 255, 255, 0.92);
+    --surface-strong: #ffffff;
+    --text: #1f2937;
+    --muted: #5b6473;
+    --accent: #0f766e;
+    --accent-strong: #115e59;
+    --accent-soft: #d7f3ee;
+    --highlight: #ffd166;
+    --border: rgba(31, 41, 55, 0.12);
+    --shadow: 0 24px 80px rgba(15, 23, 42, 0.14);
+    --radius: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: "Manrope", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(244, 114, 182, 0.14), transparent 24%),
+        linear-gradient(180deg, #f8f4ed 0%, #f1ece2 100%);
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+.page-shell {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1.25rem 0 2rem;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.hero.board-only {
+    justify-content: center;
+    text-align: center;
+}
+
+.hero.board-only #formToggle {
+    display: none;
+}
+
+h1,
+h2,
+h3 {
+    font-family: "Fraunces", serif;
+    margin: 0;
+}
+
+h1 {
+    font-size: clamp(2.3rem, 5vw, 4rem);
+    line-height: 1;
+}
+
+.section-heading p,
+.hint {
+    color: var(--muted);
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.9fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.layout.board-only {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+}
+
+.layout.board-only .board-panel {
+    width: min(900px, 100%);
+}
+
+.board-panel,
+.setup-card,
+.answers-dialog {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(18px);
+}
+
+.board-panel,
+.setup-card {
+    border-radius: var(--radius);
+    padding: 1.25rem;
+}
+
+.board-header,
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+}
+
+.board-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.primary-button,
+.secondary-button,
+.ghost-button,
+.tab {
+    border: 0;
+    border-radius: 999px;
+    padding: 0.8rem 1.15rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.primary-button {
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.ghost-button:hover,
+.tab:hover {
+    transform: translateY(-1px);
+}
+
+.secondary-button {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    font-weight: 700;
+}
+
+.ghost-button {
+    background: rgba(255, 255, 255, 0.55);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+#BingoBoard {
+    width: min(650px, 100%);
+    border-radius: 28px;
+    background: #0f172a;
+    color: white;
+    margin: 1.25rem auto 0;
+    padding: 0.65rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.boardrow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+#BingoBoard .cell {
+    aspect-ratio: 1 / 1;
+    margin: 0.22rem;
+    cursor: pointer;
+    border-radius: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    color: var(--text);
+    background: linear-gradient(180deg, #ffffff 0%, #eff4f8 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0.6rem;
+    font-weight: 700;
+    overflow: hidden;
+}
+
+.cellWrap {
+    width: 100%;
+}
+
+.cellWrap p {
+    margin: 0;
+    font-size: clamp(0.8rem, 1.65vw, 1rem);
+    line-height: 1.2;
+}
+
+.backColorYellow {
+    background: linear-gradient(180deg, #ffe7a3 0%, #ffd166 100%) !important;
+}
+
+#BingoBoard.winner {
+    animation: winner-pulse 0.9s ease 3;
+}
+
+.cellWinner {
+    outline: 3px solid #ef4444;
+    outline-offset: -3px;
+}
+
+.unused-panel,
+.share-section {
+    margin-top: 1.25rem;
+    border-radius: 20px;
+    padding: 1rem;
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+}
+
+.section-heading {
+    margin-bottom: 0.8rem;
+}
+
+.section-heading p {
+    margin: 0.35rem 0 0;
+}
+
+.unused-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.unusedTerm {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.setup-card {
+    position: sticky;
+    top: 1rem;
+}
+
+.samples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.samples a {
+    color: var(--accent-strong);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    background: rgba(15, 118, 110, 0.08);
+    color: var(--accent-strong);
+    font-weight: 700;
+}
+
+.tab.active {
+    background: var(--accent);
+    color: white;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="file"],
+textarea {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 0.85rem 0.95rem;
+    background: rgba(255, 255, 255, 0.86);
+    color: var(--text);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 180px;
+}
+
+.hint,
+.feedback {
+    font-size: 0.94rem;
+}
+
+.feedback {
+    min-height: 1.3rem;
+    margin: 1rem 0 0;
+    color: var(--accent-strong);
+    font-weight: 600;
+}
+
+.share-links {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.print-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 180px) auto;
+    gap: 0.8rem;
+    align-items: end;
+}
+
+.copy-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    align-items: center;
+}
+
+.icon-button {
+    min-width: 72px;
+    padding-inline: 0.95rem;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.checkbox-row input {
+    width: auto;
+    transform: scale(1.15);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.answers-dialog {
+    width: min(860px, calc(100% - 2rem));
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 1rem;
+}
+
+.answers-dialog::backdrop {
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+.dialog-content {
+    max-height: 70vh;
+    overflow: auto;
+    margin-top: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+thead {
+    background: #f4f7f9;
+}
+
+code {
+    background: #eef2f7;
+    border-radius: 6px;
+    padding: 0.1rem 0.35rem;
+}
+
+@keyframes winner-pulse {
+    0%,
+    100% {
+        background: #0f172a;
+    }
+    50% {
+        background: #166534;
+    }
+}
+
+@media (max-width: 960px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .setup-card {
+        position: static;
+    }
+}
+
+@media (max-width: 700px) {
+    .page-shell {
+        width: min(100% - 1rem, 100%);
+        padding-top: 0.75rem;
+    }
+
+    .hero,
+    .board-header,
+    .dialog-header,
+    .field-grid {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    .board-actions,
+    .samples {
+        gap: 0.55rem;
+    }
+
+    .copy-row {
+        grid-template-columns: 1fr;
+    }
+
+    .print-controls {
+        grid-template-columns: 1fr;
+    }
+
+    #BingoBoard {
+        padding: 0.4rem;
+    }
+
+    #BingoBoard .cell {
+        border-radius: 14px;
+        margin: 0.16rem;
+        padding: 0.45rem;
+    }
+}
